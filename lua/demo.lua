@@ -8,26 +8,28 @@ package.cpath =
   package.cpath
 
 print("cpath:", package.cpath)
-print("looking for: " .. package.searchpath("hello", package.cpath))
+print("looking for: " .. package.searchpath("fizzbuzz", package.cpath))
+-- print("looking for: " .. package.searchpath("hello", package.cpath))
 
 -- Load the DLL
+local lib = ffi.load("../zig-out/bin/fizzbuzz.dll")
 -- local lib = ffi.load("../test-c/hello.dll")
-local lib = ffi.load("../test/hello.dll")
+-- local lib = ffi.load("../test/hello.dll")
 
 -- Declare the function signature
 ffi.cdef[[
-int hello();
+const char* fizzbuzz(size_t n);
+/*int hello();*/
 ]]
 
-print(lib.hello())  -- should print 42
+-- print(lib.hello())  -- should print 42
 
--- -- Test calling the function
--- for i = 1, 20 do
---     local result = fb.fizzbuzz(i)
---     if result ~= nil then
---         print(ffi.string(result))
---     else
---         print(i)
---     end
--- end
---
+-- Test calling the function
+for i = 1, 20 do
+    local result = lib.fizzbuzz(i)
+    if result ~= nil then
+        print(ffi.string(result))
+    else
+        print(i)
+    end
+end
