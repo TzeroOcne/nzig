@@ -12,15 +12,16 @@ print("looking for: " .. package.searchpath("fizzbuzz", package.cpath))
 -- print("looking for: " .. package.searchpath("hello", package.cpath))
 
 -- Load the DLL
-local lib = ffi.load("../zig-out/bin/fizzbuzz.dll")
+-- local lib = ffi.load("../zig-out/bin/fizzbuzz.dll")
 -- local lib = ffi.load("../test-c/hello.dll")
 -- local lib = ffi.load("../test/hello.dll")
+local lib = require("fizzbuzz")
 
 -- Declare the function signature
-ffi.cdef[[
-const char* fizzbuzz(size_t n);
-/*int hello();*/
-]]
+-- ffi.cdef[[
+-- const char* fizzbuzz(size_t n);
+-- /*int hello();*/
+-- ]]
 
 -- print(lib.hello())  -- should print 42
 
@@ -28,7 +29,7 @@ const char* fizzbuzz(size_t n);
 for i = 1, 20 do
     local result = lib.fizzbuzz(i)
     if result ~= nil then
-        print(ffi.string(result))
+        print(result)
     else
         print(i)
     end

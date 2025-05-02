@@ -41,6 +41,14 @@ pub fn build(b: *std.Build) void {
 
             b.installArtifact(exe);
         } else if (b.option(bool, "build-shared", "Build a shared library") orelse false) {
+            const luainclude = b.option([]const u8, "lua-include", "Lua include path") orelse {
+                std.debug.print("Missing required option: 'lua-include'\n", .{});
+                return;
+            };
+            const lualib = b.option([]const u8, "lua-lib", "Lua lib path") orelse {
+                std.debug.print("Missing required option: 'lua-lib'\n", .{});
+                return;
+            };
             const libfizzbuzz = b.addSharedLibrary(.{
                 .name = "fizzbuzz",
                 .root_source_file = b.path("zig/src/fizzbuzz.zig"),
@@ -48,6 +56,11 @@ pub fn build(b: *std.Build) void {
                 .optimize = optimize,
                 .version = .{ .major = 0, .minor = 0, .patch = 1 },
             });
+
+            libfizzbuzz.linkLibC();
+            libfizzbuzz.addIncludePath(b.path(luainclude));
+            libfizzbuzz.addLibraryPath(b.path(lualib));
+            libfizzbuzz.linkSystemLibrary("lua51");
 
             b.installArtifact(libfizzbuzz);
         }
