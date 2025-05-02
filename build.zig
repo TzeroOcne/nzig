@@ -6,7 +6,7 @@ pub fn build(b: *std.Build) void {
     if (options == 1) {
         const exe = b.addExecutable(.{
             .name = "hello",
-            .root_source_file = b.path("src/hello.zig"),
+            .root_source_file = b.path("zig/src/hello.zig"),
             .target = b.graph.host,
         });
 
@@ -23,7 +23,7 @@ pub fn build(b: *std.Build) void {
         if (b.option(bool, "enable-demo", "install the demo too") orelse false) {
             const libfizzbuzz = b.addStaticLibrary(.{
                 .name = "fizzbuzz",
-                .root_source_file = b.path("src/fizzbuzz.zig"),
+                .root_source_file = b.path("zig/src/fizzbuzz.zig"),
                 .target = target,
                 .optimize = optimize,
             });
@@ -32,7 +32,7 @@ pub fn build(b: *std.Build) void {
 
             const exe = b.addExecutable(.{
                 .name = "demo",
-                .root_source_file = b.path("src/demo.zig"),
+                .root_source_file = b.path("zig/src/demo.zig"),
                 .target = target,
                 .optimize = optimize,
             });
@@ -43,7 +43,7 @@ pub fn build(b: *std.Build) void {
         } else if (b.option(bool, "build-shared", "Build a shared library") orelse false) {
             const libfizzbuzz = b.addSharedLibrary(.{
                 .name = "fizzbuzz",
-                .root_source_file = b.path("src/fizzbuzz.zig"),
+                .root_source_file = b.path("zig/src/fizzbuzz.zig"),
                 .target = target,
                 .optimize = optimize,
                 .version = .{ .major = 0, .minor = 0, .patch = 1 },
